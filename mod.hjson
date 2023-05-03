@@ -1,0 +1,15 @@
+displayName: "Schem Inspect"
+
+name: "scheminspect"
+
+author: "Goobrr"
+
+main: "scheminspect.SchemInspect"
+
+version: 0
+
+minGameVersion: 140
+
+java: true
+
+hidden: true
