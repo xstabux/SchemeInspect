@@ -11,6 +11,8 @@ public class SchemInspect extends Mod{
         Events.on(ClientLoadEvent.class, e -> {
             SelectFragment.build(Vars.ui.hudGroup);
         });
+
+        Events.on(FileTreeInitEvent.class, h -> UISounds.load());
     }
 
 }
