@@ -49,9 +49,11 @@ public class SelectFragment{
         Core.scene.addListener(new InputListener(){
             @Override
             public boolean keyDown(InputEvent event, KeyCode keycode){
-                if(keycode == KeyCode.i){
+                if(keycode != KeyCode.i && selecting){
                     toggle();
-
+                }
+                if(keycode == KeyCode.i && !event.handled){
+                    toggle();
                     return true;
                 }
                 return false;
@@ -59,12 +61,13 @@ public class SelectFragment{
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, KeyCode button){
-                if(!selecting) return false; // sink input?
+                if(!selecting || button != KeyCode.mouseLeft) return false;
                 x1 = x2 = x;
                 y1 = y2 = y;
 
                 if(event.handled){
                     toggle();
+                    return false;
                 }
 
                 Tmp.v1.set(Core.input.mouseWorld(x1, y1));
@@ -76,7 +79,7 @@ public class SelectFragment{
 
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer){
-                if(!selecting) return;
+                if(!selecting || event.keyCode != KeyCode.mouseLeft) return;
 
                 x2 = x;
                 y2 = y;
@@ -104,8 +107,13 @@ public class SelectFragment{
             t.table(Styles.black5, t1 -> {
                 indicator = t1;
                 t1.margin(10f);
-                t1.image(Icon.zoomSmall).size(15f).center().padRight(15f).color(col2);
-                t1.label(() -> "Inspecting").grow().center().get().setAlignment(Align.center);
+                t1.table(t2 -> {
+                    t2.image(Icon.zoomSmall).size(15f).center().padRight(15f).color(col2);
+                    t2.label(() -> "Inspecting").grow().center().get().setAlignment(Align.center);
+                    t2.image(Icon.zoomSmall).size(15f).center().padLeft(15f).color(col2);
+                }).growX();
+                t1.row();
+                t1.label(() -> "< Press any key to exit >").color(Pal.lightishGray).padTop(5f);
 
                 t1.setTransform(true);
             }).fill().bottom();
@@ -151,16 +159,16 @@ public class SelectFragment{
         if(selecting){
             UISounds.clickOpen.play();
             indicator.actions(
-            Actions.moveBy(0, -40f),
+            Actions.moveBy(0, -80f),
             Actions.alpha(1),
-            Actions.moveBy(0, 40f, 0.3f, Interp.pow3Out)
+            Actions.moveBy(0, 80f, 0.3f, Interp.pow3Out)
             );
         }else{
             UISounds.clickClose.play();
             indicator.actions(
-            Actions.moveBy(0, -40f, 0.3f, Interp.pow3In),
+            Actions.moveBy(0, -80f, 0.3f, Interp.pow3In),
             Actions.alpha(0),
-            Actions.moveBy(0, 40f)
+            Actions.moveBy(0, 80f)
             );
 
             selected.clear();
@@ -188,7 +196,9 @@ public class SelectFragment{
         dataTable.parent = null; // i love arc ui
         dataTable.clearChildren();
 
-        dataTable.label(() -> data.blockCount + " Buildings").growX().top().left().padBottom(5f).get().setAlignment(Align.left);
+        // to avoid edge cases where the label is still shown but normalized is null, causing a crash.
+        String header = data.blockCount + " Buildings [#" + Pal.lightishGray.toString() + "]@" + (normalized.x2 - normalized.x + 1) + "x" + (normalized.y2 - normalized.y + 1);
+        dataTable.label(() -> header).growX().top().left().padBottom(5f).get().setAlignment(Align.left);
         dataTable.row();
 
         dataTable.table(Styles.black5, t -> {
