@@ -49,10 +49,10 @@ public class SelectFragment{
         Core.scene.addListener(new InputListener(){
             @Override
             public boolean keyDown(InputEvent event, KeyCode keycode){
-                if(keycode != KeyCode.i && selecting){
+                if(!Core.input.keyTap(KeyBlind.selecting_key) && selecting){
                     toggle();
                 }
-                if(keycode == KeyCode.i && !event.handled){
+                if(Core.input.keyTap(KeyBlind.selecting_key) && !event.handled){
                     toggle();
                     return true;
                 }
@@ -109,11 +109,11 @@ public class SelectFragment{
                 t1.margin(10f);
                 t1.table(t2 -> {
                     t2.image(Icon.zoomSmall).size(15f).center().padRight(15f).color(col2);
-                    t2.label(() -> "Inspecting").grow().center().get().setAlignment(Align.center);
+                    t2.label(() -> Core.bundle.get("scheminspect.inspecting")).grow().center().get().setAlignment(Align.center);
                     t2.image(Icon.zoomSmall).size(15f).center().padLeft(15f).color(col2);
                 }).growX();
                 t1.row();
-                t1.label(() -> "< Press any key to exit >").color(Pal.lightishGray).padTop(5f);
+                t1.label(() -> "< " + Core.bundle.get("scheminspect.exit") + " >").color(Pal.lightishGray).padTop(5f);
 
                 t1.setTransform(true);
             }).fill().bottom();
@@ -197,7 +197,7 @@ public class SelectFragment{
         dataTable.clearChildren();
 
         // to avoid edge cases where the label is still shown but normalized is null, causing a crash.
-        String header = data.blockCount + " Buildings [#" + Pal.lightishGray.toString() + "]@" + (normalized.x2 - normalized.x + 1) + "x" + (normalized.y2 - normalized.y + 1);
+        String header = data.blockCount + " " + Core.bundle.get("scheminspect.buildings") + " [#" + Pal.lightishGray.toString() + "]@" + (normalized.x2 - normalized.x + 1) + "x" + (normalized.y2 - normalized.y + 1);
         dataTable.label(() -> header).growX().top().left().padBottom(5f).get().setAlignment(Align.left);
         dataTable.row();
 
