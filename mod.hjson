@@ -4,11 +4,11 @@ name: "scheminspect"
 
 author: "Goobrr, _StaBU_"
 
-description: "Fork of the deleted Goober's modification with little upgrades and bug fixes."
+description: "Fork of the deleted Goober's modification with little upgrades and bug fixes. \n!!!NO MOBILE SUPPORT"
 
 main: "scheminspect.SchemInspect"
 
-version: 0
+version: v1.0
 
 minGameVersion: 145
 
