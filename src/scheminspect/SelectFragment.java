@@ -22,6 +22,7 @@ import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.world.blocks.ConstructBlock.*;
 import mindustry.world.blocks.power.*;
+import mindustry.world.meta.StatUnit;
 
 public class SelectFragment{
     static float x1, y1, x2, y2;
@@ -43,6 +44,9 @@ public class SelectFragment{
             normalized = null;
             selecting = false;
         });
+    }
+
+    public SelectFragment() {
     }
 
     public static void build(Group parent){
@@ -206,10 +210,10 @@ public class SelectFragment{
             t.top().left();
             t.image(Icon.powerSmall).size(30f).color(Pal.power).top().left().padRight(5f);
             t.table(t1 -> {
-                t1.label(() -> (data.powerProduction - data.powerConsumption) * 60 + "/s").growX().pad(5f);
-                t1.label(() -> "[green]+" + data.powerProduction * 60 + "/s").growX().pad(5f);
-                t1.label(() -> "[scarlet]-" + data.powerConsumption * 60 + "/s").growX().pad(5f);
-                t1.label(() -> "[accent]" + data.powerCapacity).growX();
+                t1.label(() -> (data.powerProduction - data.powerConsumption) * 60 + " " + StatUnit.perSecond.localized()).growX().pad(5f);
+                t1.label(() -> "[green]+" + data.powerProduction * 60).growX().pad(5f);
+                t1.label(() -> "[scarlet]-" + data.powerConsumption * 60).growX().pad(5f);
+                t1.label(() -> "[accent]" + data.powerCapacity).growX().pad(5f);
             }).fill().top().left().growX();
         }).fill().top().left().growX();
 
@@ -224,7 +228,7 @@ public class SelectFragment{
             for(ItemStack stack : data.requirements){
                 Table itemTable = new Table(t1 -> {
                     t1.image(stack.item.uiIcon).size(15).left().padLeft(5f);
-                    t1.label(() -> String.valueOf(stack.amount)).left();
+                    t1.label(() -> " " + stack.amount).left();
                 });
                 itemTable.pack();
 
@@ -249,11 +253,12 @@ public class SelectFragment{
         InspectData data = new InspectData();
         for(Building b : buildings){
             data.blockCount++;
+            //data.powerConsumption++;
             data.requirements.add(b.block.requirements);
 
-            if(b.block instanceof PowerBlock p && p.consPower != null){
-                data.powerConsumption += p.consPower.usage;
-                data.powerCapacity += p.consPower.capacity;
+            if(b.block != null && b.block.consPower != null){
+                data.powerConsumption += b.block.consPower.usage;
+                data.powerCapacity += b.block.consPower.capacity;
             }
             if(b.block instanceof PowerGenerator p){
                 data.powerProduction += p.powerProduction;

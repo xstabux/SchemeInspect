@@ -5,12 +5,18 @@ import mindustry.*;
 import mindustry.game.EventType.*;
 import mindustry.mod.*;
 
+import static mindustry.Vars.*;
+
 public class SchemInspect extends Mod{
 
     public SchemInspect(){
         Events.on(ClientLoadEvent.class, e -> {
-            SelectFragment.build(Vars.ui.hudGroup);
-            KeyBlind.load();
+            if(!mobile){
+                SelectFragment.build(Vars.ui.hudGroup);
+                KeyBlind.load();
+            }else{
+
+            }
         });
 
         Events.on(FileTreeInitEvent.class, h -> UISounds.load());

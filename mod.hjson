@@ -2,13 +2,15 @@ displayName: "Schem Inspect"
 
 name: "scheminspect"
 
-author: "Goobrr"
+author: "Goobrr, _StaBU_"
+
+description: "Fork of the deleted Goober's modification with little upgrade and bug fixes. "
 
 main: "scheminspect.SchemInspect"
 
 version: 0
 
-minGameVersion: 140
+minGameVersion: 145
 
 java: true
 
