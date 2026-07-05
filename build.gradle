@@ -18,7 +18,8 @@ repositories{
 
 ext{
     //the build number that this mod is made for
-    mindustryVersion = 'v146'
+    mindustryVersion = 'v158.1'
+    arcVersion = '0e5679dc9c'
     jabelVersion = "93fde537c7"
     sdkRoot = System.getenv("ANDROID_HOME") ?: System.getenv("ANDROID_SDK_ROOT")
 }
@@ -157,9 +158,7 @@ task mjar() {
         def modsDirectories = []
         def file = new File(rootDir, "modsDirectories.txt")
         if (file.exists()) {
-            BufferedReader reader = new BufferedReader(new FileReader(file))
-            reader.lines().forEach(line -> modsDirectories.add(line))
-            reader.close()
+            file.eachLine { line -> modsDirectories.add(line) }
         } else {
             modsDirectories.add("classic")
         }
