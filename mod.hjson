@@ -10,7 +10,7 @@ main: "scheminspect.SchemInspect"
 
 version: v1.0
 
-minGameVersion: 145
+minGameVersion: 154
 
 java: true
 
